@@ -39,7 +39,7 @@ function App() {
                 index
                 element={
                   <RequireAuth>
-                    <List />
+                    <List type="users" title="Users" />
                   </RequireAuth>
                 }
               />
@@ -47,7 +47,11 @@ function App() {
                 path="new"
                 element={
                   <RequireAuth>
-                    <New inputs={userInputs} title="Add New User" />
+                    <New
+                      inputs={userInputs}
+                      title="Add New User"
+                      type="users"
+                    />
                   </RequireAuth>
                 }
               />
@@ -65,7 +69,7 @@ function App() {
                 index
                 element={
                   <RequireAuth>
-                    <List />
+                    <List type="products" title="Products" />
                   </RequireAuth>
                 }
               />
@@ -73,7 +77,11 @@ function App() {
                 path="new"
                 element={
                   <RequireAuth>
-                    <New inputs={productInputs} title="Add New Product" />
+                    <New
+                      inputs={productInputs}
+                      title="Add New Product"
+                      type="products"
+                    />
                   </RequireAuth>
                 }
               />

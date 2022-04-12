@@ -1,17 +1,18 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns } from "../../datatablesource";
+import { userColumns, productColumns } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, doc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 
-const Datatable = () => {
+const Datatable = ({ type, title }) => {
   const [data, setData] = useState([]);
+  const typeColumn = type === "users" ? userColumns : productColumns;
 
   useEffect(() => {
     const unsub = onSnapshot(
-      collection(db, "users"),
+      collection(db, type),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {
@@ -26,11 +27,11 @@ const Datatable = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [type]);
 
   const handleDelete = async (id) => {
     try {
-      await deleteDoc(doc(db, "users", id));
+      await deleteDoc(doc(db, type, id));
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.log(error);
@@ -61,15 +62,15 @@ const Datatable = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/new" className="link">
+        {title}
+        <Link to={`/${type}/new`} className="link">
           Add New
         </Link>
       </div>
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={userColumns.concat(actionColumn)}
+        columns={typeColumn.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
